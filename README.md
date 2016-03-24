@@ -1,2 +1,2 @@
 # GMM-testbed
-Initial testbed
+protocol 2 testbed
