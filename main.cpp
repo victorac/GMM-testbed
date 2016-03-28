@@ -35,7 +35,7 @@ int readRoot(){
     FILE* UBMlist;
     FILE* testFile;
     FILE* testList;
-    int docCount, spkCount=0,trainCount=0,testCount=0,totalDocs=0,base=1;
+    int docCount, objCount=0,trainCount=0,testCount=0,base=0,spkCount=0;
     char* aux;
     char name[20];
     
@@ -82,7 +82,7 @@ int readRoot(){
                 perror("Não conseguiu abrir o diretorio filho");
                 continue;
             }
-            fprintf(targetFile, "spk%i ", spkCount);
+//            fprintf(targetFile, "obj%i ", spkCount);
             base+=testCount;
             docCount=0;
             testCount=0;
@@ -94,25 +94,24 @@ int readRoot(){
                     aux=strrchr(entChild->d_name,'.');
                     strncpy(name,entChild->d_name,strlen(entChild->d_name)-4);
                     name[strlen(entChild->d_name)-4]=0;
-                    if(docCount<5){
+                    if(docCount<=7){
                         fprintf(UBMlist, "%s\n", name);
-                        fprintf(targetFile, "%s ", name);
+//                        fprintf(targetFile, "%s ", name);
                         trainCount++;
-                    }else if(docCount==5){
-                        fprintf(targetFile, "%s\n", name);
                     }else{
+                        fprintf(targetFile, "obj%i %s\n", objCount,name);
                         fprintf(testList,"%s\n",name);
-                        fprintf(refFile, "%i 0 %i 1\n",spkCount,totalDocs);
+//                        fprintf(refFile, "%i 0 %i 1\n",spkCount,totalDocs);
                         testCount++;
-                        totalDocs++;
+                        objCount++;
                     }
                     sprintf(line, "%s/%s\n", audioDirPath, entChild->d_name);
                     fputs(line, listFile);
                 }
             }
-            //for(int i=base;i<base+testCount;i++){
-            //    fprintf(refFile, "%i 0 %i 1\n",i,spkCount-1);   
-            //}
+            for(int i=base;i<base+testCount;i++){
+                fprintf(refFile, "%i 0 %i 1\n",spkCount,i);   
+            }
             closedir(audioDir);
         }
     }
@@ -137,10 +136,10 @@ int readRoot(){
     while(fgets(line,sizeof(line), testList)!=NULL){
         line[strlen(line)-1]=0;
         fprintf(testFile,"%s ", line);
-        for(int i=1;i<spkCount;i++){
+        for(int i=1;i<objCount;i++){
             fprintf(testFile, "spk%i ",i);
         }
-        fprintf(testFile, "spk%i\n",spkCount);
+        fprintf(testFile, "spk%i\n",objCount);
     }
     fclose(testList);
     fclose(testFile);
