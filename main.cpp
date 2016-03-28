@@ -109,8 +109,10 @@ int readRoot(){
                     fputs(line, listFile);
                 }
             }
-            for(int i=base;i<base+testCount;i++){
-                fprintf(refFile, "%i 0 %i 1\n",spkCount,i);   
+            for(int i=base+1;i<=base+testCount;i++){
+                for (int j=base;j<base+testCount;j++){
+                    fprintf(refFile, "%i 0 %i 1\n",i,j);
+                }
             }
             closedir(audioDir);
         }
@@ -249,10 +251,10 @@ int makeDistanceMatrix(){
 }
 
 int main(int argc, char** argv) {
-    //readRoot();
-    //makeHCopyScript();
-    makeDistanceMatrix();
-    makeSysFile();
+    readRoot();
+    makeHCopyScript();
+    //makeDistanceMatrix();
+    //makeSysFile();
     return 0;
 }
 
