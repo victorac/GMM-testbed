@@ -12,8 +12,8 @@
 extern "C" {
 #endif
 
-    #define ROOT_DIR "/home/victor/Documents/Mestrado/Projeto/datasets/solo"
-    #define CORPUS_NAME "CHAINS"
+    #define ROOT_DIR "/home/victor/Documents/Mestrado/Projeto/datasets/youtubeDataset"
+    #define CORPUS_NAME "YouTube"
     #define REF_DIR "/home/victor/Documents/Mestrado/Projeto/GMM/refDir"
     #define HOME_DIR REF_DIR "/" CORPUS_NAME
     #define LIST_PATH HOME_DIR "/" CORPUS_NAME ".txt"

@@ -17,6 +17,8 @@
 
 using namespace std;
 
+#define UBM_SIZE 2
+
 /*
  * 
  */
@@ -94,7 +96,7 @@ int readRoot(){
                     aux=strrchr(entChild->d_name,'.');
                     strncpy(name,entChild->d_name,strlen(entChild->d_name)-4);
                     name[strlen(entChild->d_name)-4]=0;
-                    if(docCount<=7){
+                    if(docCount<=UBM_SIZE){
                         fprintf(UBMlist, "%s\n", name);
 //                        fprintf(targetFile, "%s ", name);
                         trainCount++;
@@ -138,10 +140,10 @@ int readRoot(){
     while(fgets(line,sizeof(line), testList)!=NULL){
         line[strlen(line)-1]=0;
         fprintf(testFile,"%s ", line);
-        for(int i=1;i<objCount;i++){
-            fprintf(testFile, "spk%i ",i);
+        for(int i=0;i<objCount-1;i++){
+            fprintf(testFile, "obj%i ",i);
         }
-        fprintf(testFile, "spk%i\n",objCount);
+        fprintf(testFile, "obj%i\n",objCount-1);
     }
     fclose(testList);
     fclose(testFile);
@@ -219,7 +221,7 @@ int makeSysFile(){
     return 0;
 }
 
-int makeDistanceMatrix(){
+int makeSimMatrix(){
     FILE* resFile;
     FILE* distFile;
     char fileName[50];
@@ -232,7 +234,7 @@ int makeDistanceMatrix(){
         perror("Não conseguiu abrir arquivo de resposta");
         return -1;
     }
-    sprintf(fileName, "%s/distanceMatrix", HOME_DIR);
+    sprintf(fileName, "%s/simMatrix", HOME_DIR);
     distFile=fopen(fileName, "w");
     if(resFile==NULL){
         perror("Não conseguiu criar arquivo de distancia");
@@ -253,7 +255,7 @@ int makeDistanceMatrix(){
 int main(int argc, char** argv) {
     readRoot();
     makeHCopyScript();
-    //makeDistanceMatrix();
+    //makeSimMatrix();
     //makeSysFile();
     return 0;
 }
